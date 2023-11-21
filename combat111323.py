@@ -24,6 +24,7 @@ AIDAN'S NOTES
 
 '''
 import random
+from enemyclasses import localMerc
 
 p_health = 100
 p_damagePri = 0
@@ -38,15 +39,6 @@ p_piAmmo = 0
 p_shAmmo = 0
 p_asAmmo = 0
 
-e_health = 100
-e_damagePri = 0
-e_damageSec = 0
-e_stamina = 0
-e_staminaDrainPri = 0
-e_staminaDrainSec = 0
-e_chanceToHitPri = 0
-e_chanceToHitSec = 0
-e_critChance = 0
 #enemies will have unlimited ammo for now
 
 critMult = 1.5
@@ -101,39 +93,10 @@ else:
 
 print("You have {} stamina, {} health, and deal {} damage with your primary/{} with your secondary.".format(p_stamina,p_health,p_damagePri,p_damageSec))
 
-e_armor = input("What armor should the enemy have?")
-if e_armor == "no armor":
-    e_stamina = 50
-elif e_armor == "jogging outfit":
-    e_stamina = 70
-elif e_armor == "light armor":
-    e_stamina = 40
-    e_health = 115
-else:
-    e_stamina = 30
-    e_health = 125
+# Creates the enemy
+enemy1 = localMerc()
 
-e_primary = input("What primary should the enemy have?")
-if e_primary == "shotgun":
-    e_damagePri = 100
-    e_staminaDrainPri =30
-    e_chanceToHitPri =80
-else: #assault rifle
-    e_damagePri = 65
-    e_staminaDrainPri = 10
-    e_chanceToHitPri = 80
-
-e_sec = input("What sidearm should the enemy have?")
-if e_sec == "switchblade":
-    e_damageSec = 25
-    e_staminaDrainSec = 10
-    e_chanceToHitSec = 100
-else: #pistol
-    e_damageSec = 50
-    e_staminaDrainSec = 10
-    e_chanceToHitSec = 60
-
-print("The enemy has {} stamina, {} health, and deals {} damage with their primary/{} with their secondary.".format(e_stamina,e_health,e_damagePri,e_damageSec))
+print("The enemy is a " + enemy1.name)
 
 turnCounter = 1
 inCombat = True
@@ -144,7 +107,7 @@ player_turn = True
 while inCombat == True: #Checks to see if combat has ended.
     print("--TURN " + str(turnCounter) + "--")
     print("You have " + str(p_health) + " remaining.")
-    print("The enemy has " + str(e_health) + " remaining.")
+    print("The enemy has " + str(enemy1.health) + " remaining.")
     
     #Checks to see if it is the player's turn. If it is, the player takes their turn.
     if player_turn == True:
@@ -162,7 +125,7 @@ while inCombat == True: #Checks to see if combat has ended.
             if p_stamina - p_staminaDrainPri >= 0:
                print("You shot at the enemy")
                if random.randint(0,100) < p_chanceToHitPri:
-                   e_health = e_health - p_damagePri
+                   enemy1.health = enemy1.health - p_damagePri
                    print("You hit the enemy for " + str(p_damagePri) + " damage!")
                else:
                    print("You missed")
@@ -176,16 +139,16 @@ while inCombat == True: #Checks to see if combat has ended.
     #Enemy turn
     elif player_turn == False:
         print("It is the enemy's turn")
-        print("The enemy shits his pants!")
+        print("The enemy sheds a single tear")
         
         #This stuff happens after the enemy finishes their actions.
-        player_turn = True
+        player_turn = True1
         turnCounter = turnCounter + 1
     #This stuff happens after a turn.
     if p_health <= 0:
         print("The player has died. Game over.")
         exit()
-    elif e_health <= 0:
+    elif enemy1.health <= 0:
         print("The enemy has died. You win!")
         exit()
         
